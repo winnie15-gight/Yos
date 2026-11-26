@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#212121">
+  <title>{% block title %}TOSY AI{% endblock %}</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static',filename='images/tosy-logo.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}?v=3">
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/" aria-label="TOSY AI home"><img class="brand-logo" src="{{ url_for('static',filename='images/tosy-logo.png') }}" alt=""><span>TOSY <span class="brand-ai">AI</span></span></a>
+  <div class="navlinks">
+    <a href="/pricing">Plans</a>
+    {% if user %}<a href="/chat">Workspace</a><a href="/logout">Log out</a>
+    {% else %}<a href="/login">Log in</a><a class="smallbtn" href="/signup">Sign up</a>{% endif %}
+  </div>
+</nav>
+<main>
+  <div class="notice-stack" aria-live="polite">
+  {% with items=get_flashed_messages(with_categories=true) %}
+    {% for category,message in items %}<div class="notice {{category}}">{{message}}</div>{% endfor %}
+  {% endwith %}
+  </div>
+  {% block body %}{% endblock %}
+</main>
+<footer><span class="footer-brand"><img src="{{ url_for('static',filename='images/tosy-logo.png') }}" alt=""> TOSY AI</span><span>Think clearly. Create freely.</span></footer>
+<div class="page-loader" id="page-loader" role="status" aria-live="polite" aria-label="Loading TOSY AI">
+  <img class="loader-logo" src="{{ url_for('static',filename='images/tosy-logo.png') }}" alt="TOSY AI">
+  <img class="loader-animation" src="{{ url_for('static',filename='images/tosy-loading.gif') }}" alt="">
+  <div class="loader-title">Loading <span>TOSY AI</span>...</div>
+  <div class="loader-subtitle">Please wait while we prepare your workspace.</div>
+</div>
+<script>
+(() => {
+  const loader = document.getElementById('page-loader');
+  if (!loader) return;
+  const show = () => loader.classList.add('active');
+  const hide = () => loader.classList.remove('active');
+  window.addEventListener('load', () => window.setTimeout(hide, 180));
+  window.addEventListener('pageshow', hide);
+  document.addEventListener('click', event => {
+    const link = event.target.closest('a[href]');
+    if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const url = new URL(link.href, window.location.href);
+    if (url.origin === window.location.origin && !link.target && !link.hasAttribute('download') && url.pathname !== window.location.pathname + url.hash) show();
+  });
+  document.addEventListener('submit', event => {
+    if (event.target.reportValidity && !event.target.reportValidity()) return;
+    show();
+  });
+})();
+</script>
+</body>
+</html>

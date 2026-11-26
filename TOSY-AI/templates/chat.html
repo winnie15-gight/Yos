@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}TOSY AI{% endblock %}
+{% block body %}
+<section class="workspace">
+  <aside class="sidebar">
+    <a class="sidebrand" href="/"><img class="side-logo" src="{{ url_for('static',filename='images/tosy-logo.png') }}" alt=""> TOSY <span class="brand-ai">AI</span></a>
+    <a class="new-chat active" href="/chat"><span>＋</span> New chat</a>
+    <a class="side-link" href="/pricing"><span>◇</span> Upgrade plan</a>
+    <div class="sidebar-bottom">
+      <div class="profile-avatar">{{ user['name'][:1]|upper }}</div>
+      <div class="profile-copy"><strong>{{ user['name'] }}</strong><small>{{ user['plan']|upper }} PLAN</small></div>
+    </div>
+  </aside>
+  <section class="chatpanel">
+    <header class="chathead"><span class="model-name">TOSY <span>AI</span> <span class="model-chevron">⌄</span></span><span class="status-dot">●</span></header>
+    <div id="messages" class="messages" aria-live="polite">
+      <div class="welcome">
+        <img class="welcome-logo" src="{{ url_for('static',filename='images/tosy-logo.png') }}" alt="TOSY AI">
+        <h1>What can I help with?</h1>
+        <p>Ask anything, explore an idea, or get something done.</p>
+      </div>
+    </div>
+    <div class="composer-wrap">
+      <div class="composer">
+        <textarea id="prompt" rows="1" aria-label="Message TOSY AI" placeholder="Message TOSY AI"></textarea>
+        <div class="tools">
+          <label class="tool-button attach-button" title="Attach a file">＋<span>Attach</span><input id="file" type="file" accept=".txt,.md,.pdf,.png,.jpg,.jpeg,.webp" hidden></label>
+          <button id="record" class="tool-button" type="button" title="Speak your message" aria-label="Speak your message">🎙<span>Voice</span></button>
+          <span class="tools-spacer"></span>
+          <button class="send" id="send" type="button" aria-label="Send message">↑</button>
+        </div>
+      </div>
+      <p class="hint">TOSY AI can make mistakes. Check important information.</p>
+      <div id="ui-status" class="ui-status" role="status" aria-live="polite"></div>
+    </div>
+  </section>
+</section>
+<script src="{{url_for('static',filename='chat.js')}}?v=5"></script>
+{% endblock %}

@@ -1,0 +1,17 @@
+services:
+  tosy:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_PATH: /app/data/tosy.db
+    volumes:
+      - tosy_uploads:/app/uploads
+      - tosy_db:/app/data
+
+volumes:
+  tosy_uploads:
+  tosy_db:
